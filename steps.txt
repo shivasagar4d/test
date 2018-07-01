@@ -1,0 +1,19 @@
+
+
+
+Step 1:
+Copy county_simulation.sh script and country_file.txt file into oner of the broker local path
+
+Step 2:
+Run the script : sh county_simulation.sh
+ --- this will read one record per 1 second and write to topic country-stream
+ 
+Step 3 :What aim i  following 
+CREATE stream country_stream( country VARCHAR,Status VARCHAR,mode_contact VARCHAR,code VARCHAR,flag VARCHAR ) \
+WITH (kafka_topic='country-stream', value_format='DELIMITED');
+
+Step 4:  Eaxmple for 30 mins aggregations  
+
+CREATE TABLE country_T_30 AS SELECT country,count(*) AS cnt FROM country_stream WINDOW TUMBLING (SIZE 30 MINUTE) GROUP BY country;
+
+CREATE TABLE Status_T_30 AS SELECT Status,count(*) AS cnt FROM country_stream WINDOW TUMBLING (SIZE 30 MINUTE) GROUP BY Status;
